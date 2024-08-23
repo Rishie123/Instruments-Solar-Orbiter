@@ -5,6 +5,7 @@ from dash.dependencies import Input, Output  # Callbacks to update layout based 
 import plotly.express as px  # Plotly Express for creating interactive visualizations
 import plotly.graph_objects as go  # Plotly Graph Objects for more control over visualizations
 from sklearn.preprocessing import MinMaxScaler
+from flash import Flask
 
 # Load the dataset
 data_path = "Solar_Orbiter_with_anomalies.csv"  # Path to dataset file
@@ -42,7 +43,8 @@ feature_importance_fig.update_layout(
 
 # Initialize the Dash app
 app = dash.Dash(__name__, title="Solar Orbiter Data Visualization")  # Title of the Dash app which is showed in the browser tab
-server = app.server
+#server=app.server
+server = Flask(__name__)
 
 # Remove the 'Date' and 'anomaly_score' columns from the checklist options
 checklist_options = [{'label': col, 'value': col} for col in solar_data.columns if col not in ['Date', 'anomaly_score']]
