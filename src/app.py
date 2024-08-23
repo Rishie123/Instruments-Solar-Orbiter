@@ -104,7 +104,7 @@ app.layout = html.Div([
     [Output('time-series-chart', 'figure'),
      Output('correlation-heatmap', 'figure'),
      Output('scaled-time-series-chart', 'figure'),
-     Output('anomaly-score-chart', 'figure'),
+     Output('anomaly-score-chart', 'figure')]
     [Input('instrument-checklist', 'value'),
      Input('date-picker-range', 'start_date'),
      Input('date-picker-range', 'end_date')]
