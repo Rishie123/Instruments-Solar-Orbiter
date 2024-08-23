@@ -66,6 +66,12 @@ app.layout = html.Div([
         end_date=solar_data['Date'].max()  # Default end date
     ),
     # Three rows, each containing graphs
+    html.Div(id='anomaly-stats', style={'margin-top': '20px', 'text-align': 'center'}),  # Anomaly Stats
+    html.Iframe(
+        srcDoc=open("abc.html").read(),
+        style={"height": "500px", "width": "100%"}
+    ),
+
     html.Div([
         html.Div([dcc.Graph(id='time-series-chart')], className="six columns"),  # Time Series Chart
         html.Div([dcc.Graph(id='correlation-heatmap')], className="six columns"),  # Correlation Heatmap
@@ -79,11 +85,7 @@ app.layout = html.Div([
     html.Div([
         html.Div([dcc.Graph(id='rolling-mean-heatmap')], className="six columns"),  # Rolling Mean Heatmap
     ], className="row"),
-    html.Div(id='anomaly-stats', style={'margin-top': '20px', 'text-align': 'center'}),  # Anomaly Stats
-    html.Iframe(
-        srcDoc=open("shap_values_plot.html").read(),
-        style={"height": "500px", "width": "100%"}
-    ),
+
     # Add the feature importance graph at the bottom
     html.Div([
         dcc.Graph(figure=feature_importance_fig, id='feature-importance-chart')
