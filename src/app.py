@@ -71,14 +71,7 @@ app.layout = html.Div([
 
     html.Div([
         html.Div([dcc.Graph(id='time-series-chart')], className="six columns"),  # Time Series Chart
-        html.Div(id='anomaly-stats', style={'margin-top': '20px', 'text-align': 'center'}),  # Anomaly Stats
-        html.Div(
-            html.Iframe(
-                srcDoc=open("Instruments_Image.html").read(),
-                style={"height": "600px", "width": "50%", "border": "none"}
-            ),
-            style={"display": "flex", "justify-content": "center", "align-items": "center"}
-        ),
+
         html.Div([dcc.Graph(id='correlation-heatmap')], className="six columns"),  # Correlation Heatmap
     ], className="row"),
         
@@ -86,8 +79,17 @@ app.layout = html.Div([
         html.Div([dcc.Graph(id='scaled-time-series-chart')], className="six columns"),  # Scaled Time Series Chart
     ], className="row"),
     html.Div([
-        html.Div([dcc.Graph(id='anomaly-score-chart')], className="six columns"),  # Anomaly Score Chart
+        html.Div([dcc.Graph(id='anomaly-score-chart')], className="six columns"),
+        html.Div(id='anomaly-stats', style={'margin-top': '20px', 'text-align': 'center'}),  # Anomaly Stats
+        html.Div(
+            html.Iframe(
+                srcDoc=open("Instruments_Image.html").read(),
+                style={"height": "600px", "width": "50%", "border": "none"}
+            ),
+            style={"display": "flex", "justify-content": "center", "align-items": "center"}
+        ),# Anomaly Score Chart
     ], className="row"),
+
     html.Div([
         html.Div([dcc.Graph(id='rolling-mean-heatmap')], className="six columns"),  # Rolling Mean Heatmap
     ], className="row"),
