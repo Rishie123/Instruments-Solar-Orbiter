@@ -66,16 +66,18 @@ app.layout = html.Div([
         end_date=solar_data['Date'].max()  # Default end date
     ),
     # Three rows, each containing graphs
-    html.Div(id='anomaly-stats', style={'margin-top': '20px', 'text-align': 'center'}),  # Anomaly Stats
-    html.Iframe(
-        srcDoc=open("abc.html").read(),
-        style={"height": "500px", "width": "100%"}
-    ),
+
 
     html.Div([
         html.Div([dcc.Graph(id='time-series-chart')], className="six columns"),  # Time Series Chart
+        html.Div(id='anomaly-stats', style={'margin-top': '20px', 'text-align': 'center'}),  # Anomaly Stats
+        html.Iframe(
+        srcDoc=open("abc.html").read(),
+        style={"height": "600px", "width": "50%"}
+    ),
         html.Div([dcc.Graph(id='correlation-heatmap')], className="six columns"),  # Correlation Heatmap
     ], className="row"),
+  
     html.Div([
         html.Div([dcc.Graph(id='scaled-time-series-chart')], className="six columns"),  # Scaled Time Series Chart
     ], className="row"),
