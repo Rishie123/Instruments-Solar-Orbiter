@@ -92,9 +92,6 @@ app.layout = html.Div([
 
     ], className="row"),
 
-    html.Div([
-        html.Div([dcc.Graph(id='rolling-mean-heatmap')], className="six columns"),  # Rolling Mean Heatmap
-    ], className="row"),
 
     # Add the feature importance graph at the bottom
     html.Div([
@@ -108,7 +105,6 @@ app.layout = html.Div([
      Output('correlation-heatmap', 'figure'),
      Output('scaled-time-series-chart', 'figure'),
      Output('anomaly-score-chart', 'figure'),
-     Output('rolling-mean-heatmap', 'figure')],
     [Input('instrument-checklist', 'value'),
      Input('date-picker-range', 'start_date'),
      Input('date-picker-range', 'end_date')]
@@ -222,27 +218,9 @@ def update_graphs(selected_instruments, start_date, end_date):
         yaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22))   # Set y-axis tick labels size to 18
     )
     
-    # 5-Day Rolling Mean Heatmap
-    rolling_mean_data = scaled_data[selected_instruments].rolling(window=5).mean()
-    rolling_mean_fig = go.Figure(
-        go.Heatmap(
-            z=rolling_mean_data.corr(),  # Correlation of rolling mean data on scaled data
-            x=selected_instruments,  # X-axis labels
-            y=selected_instruments,  # Y-axis labels
-            colorscale='Viridis'  # Color scale
-        )
-    )
-    rolling_mean_fig.update_layout(
-        title="5-Day Rolling Mean Correlation Heatmap",
-        title_font_size=28,  # Decrease title font size
-        xaxis_title_font_size=22,  # Decrease x-axis title font size
-        yaxis_title_font_size=22,  # Decrease y-axis title font size
-        legend_font_size=22,  # Decrease legend font size
-        xaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22)),  # Set x-axis tick labels size to 18
-        yaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22))   # Set y-axis tick labels size to 18
-    )  # Updating layout of rolling mean heatmap
-    
-    return time_series_fig, correlation_fig, scaled_time_series_fig, anomaly_score_fig, rolling_mean_fig  # Return updated figures
+
+  
+    return time_series_fig, correlation_fig, scaled_time_series_fig, anomaly_score_fig  # Return updated figures
 
 """References:
 1. https://dash.plotly.com/ - Dash Documentation
