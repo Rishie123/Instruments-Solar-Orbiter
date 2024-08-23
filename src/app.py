@@ -45,8 +45,10 @@ app = dash.Dash(__name__, title="Solar Orbiter Data Visualization")  # Title of 
 server = app.server
 
 # Remove the 'Date' and 'anomaly_score' columns from the checklist options
-checklist_options = [{'label': col, 'value': col} for col in solar_data.columns if col not in ['Date', 'anomaly_score']]
-
+checklist_options = sorted(
+    [{'label': col, 'value': col} for col in solar_data.columns if col not in ['Date', 'anomaly_score']],
+    key=lambda x: x['label']
+)
 # Layout of the Dash app
 app.layout = html.Div([
     html.H1("Solar Orbiter Instrument Data Visualization", style={'text-align': 'center'}),  # Title
@@ -70,11 +72,13 @@ app.layout = html.Div([
 
     html.Div([
         html.Div([dcc.Graph(id='time-series-chart')], className="six columns"),  # Time Series Chart
-        html.Div(id='anomaly-stats', style={'margin-top': '20px', 'text-align': 'center'}),  # Anomaly Stats
-        html.Iframe(
+    html.Div(
+    html.Iframe(
         srcDoc=open("abc.html").read(),
-        style={"height": "600px", "width": "50%"}
+        style={"height": "600px", "width": "50%", "border": "none"}
     ),
+    style={"display": "flex", "justify-content": "center", "align-items": "center"}
+    )
         html.Div([dcc.Graph(id='correlation-heatmap')], className="six columns"),  # Correlation Heatmap
     ], className="row"),
   
