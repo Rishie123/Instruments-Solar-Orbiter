@@ -40,11 +40,11 @@ feature_importance_fig.update_layout(
     xaxis=dict(tickfont=dict(size=18)),  # Set x-axis tick labels size to 18
     yaxis=dict(tickfont=dict(size=18))   # Set y-axis tick labels size to 18
 )
+server = Flask(__name__)
 
 # Initialize the Dash app
 app = dash.Dash(__name__, title="Solar Orbiter Data Visualization")  # Title of the Dash app which is showed in the browser tab
 #server=app.server
-server = Flask(__name__)
 
 # Remove the 'Date' and 'anomaly_score' columns from the checklist options
 checklist_options = [{'label': col, 'value': col} for col in solar_data.columns if col not in ['Date', 'anomaly_score']]
