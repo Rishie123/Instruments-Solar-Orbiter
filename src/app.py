@@ -108,7 +108,7 @@ app.layout = html.Div([
     [Input('instrument-checklist', 'value'),
      Input('date-picker-range', 'start_date'),
      Input('date-picker-range', 'end_date')]
-)
+
 def update_graphs(selected_instruments, start_date, end_date):
     """
     Callback function to update graphs based on user input.
