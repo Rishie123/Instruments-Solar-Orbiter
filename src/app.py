@@ -74,7 +74,7 @@ app.layout = html.Div([
         html.Div(id='anomaly-stats', style={'margin-top': '20px', 'text-align': 'center'}),  # Anomaly Stats
         html.Div(
             html.Iframe(
-                srcDoc=open("abc.html").read(),
+                srcDoc=open("Instruments_Image.html").read(),
                 style={"height": "600px", "width": "50%", "border": "none"}
             ),
             style={"display": "flex", "justify-content": "center", "align-items": "center"}
