@@ -51,7 +51,8 @@ checklist_options = sorted(
 )
 # Layout of the Dash app
 app.layout = html.Div([
-    html.H1("Solar Orbiter Instrument Data Visualization", style={'text-align': 'center'}),  # Title
+    html.H1("Solar Orbiter Instrument Data Visualization", style={'text-align': 'center'}),
+# Title
     # Checklist to select instruments
     dcc.Checklist(
         id='instrument-checklist',  # Component ID
@@ -72,7 +73,15 @@ app.layout = html.Div([
     html.Div([
         html.Div([dcc.Graph(id='time-series-chart')], className="six columns"),  # Time Series Chart
 
-        html.Div([dcc.Graph(id='correlation-heatmap')], className="six columns"),  # Correlation Heatmap
+        html.Div([dcc.Graph(id='correlation-heatmap')], className="six columns"),
+              html.Div(id='anomaly-stats', style={'margin-top': '20px', 'text-align': 'center'}),  # Anomaly Stats
+        html.Div(
+            html.Iframe(
+                srcDoc=open("Instruments_Image.html").read(),
+                style={"height": "600px", "width": "50%", "border": "none"}
+            ),
+            style={"display": "flex", "justify-content": "center", "align-items": "center"}
+        ),# Anomaly Score Chart# Correlation Heatmap
     ], className="row"),
         
     html.Div([
@@ -80,14 +89,7 @@ app.layout = html.Div([
     ], className="row"),
     html.Div([
         html.Div([dcc.Graph(id='anomaly-score-chart')], className="six columns"),
-        html.Div(id='anomaly-stats', style={'margin-top': '20px', 'text-align': 'center'}),  # Anomaly Stats
-        html.Div(
-            html.Iframe(
-                srcDoc=open("Instruments_Image.html").read(),
-                style={"height": "600px", "width": "50%", "border": "none"}
-            ),
-            style={"display": "flex", "justify-content": "center", "align-items": "center"}
-        ),# Anomaly Score Chart
+
     ], className="row"),
 
     html.Div([
