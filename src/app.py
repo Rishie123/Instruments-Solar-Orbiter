@@ -116,123 +116,99 @@ app.layout = html.Div([
      Input('date-picker-range', 'start_date'),
      Input('date-picker-range', 'end_date')]
 )
-
 def update_graphs(selected_instruments, start_date, end_date):
-    """
-    Callback function to update graphs based on user input.
-    Args:
-    selected_instruments (list): List of selected instruments.
-    start_date (str): Start date selected by the user.
-    end_date (str): End date selected by the user.
-    Returns:
-    figs (list): List of figures for each graph.
-    """
-    # Filter primary and secondary datasets based on selected date range
-    filtered_data = solar_data[(solar_data['Date'] >= start_date) & (solar_data['Date'] <= end_date)]  # For Time Series Chart
-    filtered_data2 = solar_data2[(solar_data2['Date'] >= start_date) & (solar_data2['Date'] <= end_date)]  # For Anomaly Score Chart
-    
+    # Convert start_date and end_date to datetime if necessary
+    start_date = pd.to_datetime(start_date)
+    end_date = pd.to_datetime(end_date)
+
     # Filter the new dataset for correlation heatmap and scaled plots
     filtered_data_no_units = solar_data_no_units[(solar_data_no_units['Date'] >= start_date) & (solar_data_no_units['Date'] <= end_date)]
+    filtered_data = solar_data[(solar_data['Date'] >= start_date) & (solar_data['Date'] <= end_date)]
+    filtered_data2 = solar_data2[(solar_data2['Date'] >= start_date) & (solar_data2['Date'] <= end_date)]
     
     # Normalize the data from the new dataset
     scaler = MinMaxScaler(feature_range=(-1, 1))
     scaled_data_no_units = filtered_data_no_units.copy()
-    # Exclude specific columns if necessary; adjust as needed
-    columns_to_scale = [col for col in selected_instruments if col not in ['IBS_R', 'IBS_T', 'IBS_N', 'OBS_R', 'OBS_T', 'OBS_N']]
-    scaled_data_no_units[columns_to_scale] = scaler.fit_transform(filtered_data_no_units[columns_to_scale])
-    
-    # Time Series Chart using the primary dataset
-    time_series_fig = go.Figure()  # Creating a new figure for time series chart
+
+    # Ensure that only selected instruments are scaled
+    if selected_instruments:
+        scaled_data_no_units[selected_instruments] = scaler.fit_transform(filtered_data_no_units[selected_instruments])
+
+    # Time Series Chart
+    time_series_fig = go.Figure()
     for instrument in selected_instruments:
         time_series_fig.add_trace(
             go.Scatter(
-                x=filtered_data['Date'],  # X-axis data
-                y=filtered_data[instrument],  # Y-axis data
-                mode='lines+markers',  # Display mode
-                name=instrument  # Instrument name
+                x=filtered_data['Date'],
+                y=filtered_data[instrument],
+                mode='lines+markers',
+                name=instrument
             )
         )
     time_series_fig.update_layout(
         title="Time Series of Selected Instruments",
-        title_font_size=28,  # Title font size
-        xaxis_title_font_size=22,  # X-axis title font size
-        yaxis_title_font_size=22,  # Y-axis title font size
-        legend_font_size=22,  # Legend font size
-        xaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22)),  # X-axis tick labels size
-        yaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22))   # Y-axis tick labels size
-    )  # Updating layout of time series chart
-    
-    # Correlation Heatmap using the new dataset
-    correlation_matrix = filtered_data_no_units[selected_instruments].corr()  # Calculate correlation matrix
-    correlation_fig = go.Figure(
-        go.Heatmap(
-            z=correlation_matrix.values,  # Correlation values
-            x=correlation_matrix.columns,  # X-axis labels
-            y=correlation_matrix.index,  # Y-axis labels
-            colorscale='Viridis',  # Color scale
-            colorbar=dict(title="Correlation Coefficient")  # Colorbar title
-        )
+        xaxis_title='Date',
+        yaxis_title='Value'
     )
-    correlation_fig.update_layout(
-        title="Correlation Heatmap (Solar_Orbiter_without_units.csv)",
-        title_font_size=28,  # Title font size
-        xaxis_title_font_size=22,  # X-axis title font size
-        yaxis_title_font_size=22,  # Y-axis title font size
-        legend_font_size=22,  # Legend font size
-        xaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22)),  # X-axis tick labels size
-        yaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22))   # Y-axis tick labels size
-    )  # Updating layout of correlation heatmap
+    
+    # Correlation Heatmap
+    if len(selected_instruments) > 1:
+        correlation_matrix = filtered_data_no_units[selected_instruments].corr()
+        correlation_fig = go.Figure(
+            go.Heatmap(
+                z=correlation_matrix.values,
+                x=correlation_matrix.columns,
+                y=correlation_matrix.index,
+                colorscale='Viridis'
+            )
+        )
+        correlation_fig.update_layout(
+            title="Correlation Heatmap",
+            xaxis_title='Instruments',
+            yaxis_title='Instruments'
+        )
+    else:
+        correlation_fig = go.Figure()  # Empty figure if not enough instruments selected
 
-    # Scaled Time Series Chart using the new dataset
-    scaled_time_series_fig = go.Figure()  # Creating a new figure for scaled time series chart
+    # Scaled Time Series Chart
+    scaled_time_series_fig = go.Figure()
     for instrument in selected_instruments:
         scaled_time_series_fig.add_trace(
             go.Scatter(
-                x=scaled_data_no_units['Date'],  # X-axis data
-                y=scaled_data_no_units[instrument],  # Y-axis data
-                mode='lines+markers',  # Display mode
-                name=instrument  # Instrument name
+                x=scaled_data_no_units['Date'],
+                y=scaled_data_no_units[instrument],
+                mode='lines+markers',
+                name=instrument
             )
         )
     scaled_time_series_fig.update_layout(
-        title="Scaled Time Series Plot between -1 and 1 (Solar_Orbiter_without_units.csv)",
-        title_font_size=28,  # Title font size
-        xaxis_title_font_size=22,  # X-axis title font size
-        yaxis_title_font_size=22,  # Y-axis title font size
-        legend_font_size=22,  # Legend font size
-        xaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22)),  # X-axis tick labels size
-        yaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22))   # Y-axis tick labels size
-    )  # Updating layout of scaled time series chart
+        title="Scaled Time Series Plot between -1 and 1",
+        xaxis_title='Date',
+        yaxis_title='Scaled Value'
+    )
 
-    # Anomaly Score Chart using the secondary dataset
-    anomaly_score_fig = go.Figure()  # Create a new figure for the anomaly score chart
+    # Anomaly Score Chart
+    anomaly_score_fig = go.Figure()
     anomaly_score_fig.add_trace(go.Scatter(
-        x=filtered_data2['Date'],  # Set the x-axis as the Date column of the filtered data
-        y=filtered_data2['anomaly_score'],  # Set the y-axis as the anomaly_score column of the filtered data
-        mode='lines+markers',  # Display both lines and markers on the graph
-        name='Anomaly Score',  # Name the trace, which will appear in the legend
+        x=filtered_data2['Date'],
+        y=filtered_data2['anomaly_score'],
+        mode='lines+markers',
+        name='Anomaly Score',
         marker=dict(
-            color=['red' if val < 0 else 'blue' for val in filtered_data2['anomaly_score']],  # Conditional coloring
-            size=5,  # Marker size
-            line=dict(
-                color='DarkSlateGrey',  # Line color around markers
-                width=2  # Line width
-            )
+            color=['red' if val < 0 else 'blue' for val in filtered_data2['anomaly_score']],
+            size=5,
+            line=dict(color='DarkSlateGrey', width=2)
         )
     ))
     anomaly_score_fig.update_layout(
-        title="Anomaly Scores Over Time (Lower scores indicate higher anomaly probability)",
-        xaxis_title='Date',  # X-axis title
-        yaxis_title='Anomaly Score',  # Y-axis title
-        title_font_size=28,  # Title font size
-        xaxis_title_font_size=22,  # X-axis title font size
-        yaxis_title_font_size=22,  # Y-axis title font size
-        legend_font_size=22,  # Legend font size
-        xaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22)),  # X-axis tick labels size
-        yaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22))   # Y-axis tick labels size
+        title="Anomaly Scores Over Time",
+        xaxis_title='Date',
+        yaxis_title='Anomaly Score'
     )
-    
-    return time_series_fig, correlation_fig, scaled_time_series_fig, anomaly_score_fig  # Return updated figures
+
+    return time_series_fig, correlation_fig, scaled_time_series_fig, anomaly_score_fig
+
+
 
 """References:
 1. https://dash.plotly.com/ - Dash Documentation
