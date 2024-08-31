@@ -1,4 +1,4 @@
-Date,Radial Distance from Sun(AU),Electronic Box Temperature(DegC),Outboard Sensor Temperature(DegC),Inboard Sensor Temperature(DegC),Search Coil Magnetometers Temperature(DegC),Solar Array Angle(Deg),High Gain Antenna azimuth(Deg),High Gain Antenna Elevation(Deg),anomaly_score
+Date,Radius,ELB T,Outboard Sensor Temperature(DegC),Inboard Sensor Temperature(DegC),Search Coil Magnetometers Temperature(DegC),Solar Array Angle(Deg),High Gain Antenna azimuth(Deg),High Gain Antenna Elevation(Deg),anomaly_score
 2022-01-01,0.992170817893934,2.69462839975872,-86.1999772153818,-72.5768589358267,-113.526905144881,-0.0181490043488282,99.5727448117142,-81.5800943827337,0.05640757477882663
 2022-01-02,0.985085422801075,2.6749591981804,-86.6839865720974,-73.0991747175795,-113.507703557771,-0.0181490043488282,99.543377841381,-81.5803518748014,0.07902107912495226
 2022-01-03,0.977585076709202,2.67214931224064,-86.1999772153818,-72.6224981788925,-113.483802319591,-0.0181490043488282,98.860345799249,-81.5871968722706,0.08056017825983303
