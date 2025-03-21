@@ -7,7 +7,7 @@ import plotly.graph_objects as go  # Plotly Graph Objects for more control over 
 from sklearn.preprocessing import MinMaxScaler
 
 # Load the dataset
-data_path = "solar_orbiter_anomalies3.csv"  # Path to dataset file
+data_path = "Solar_Orbiter_with_anomalies.csv"  # Path to dataset file
 data_path2 = "Solar_Orbiter_with_anomalies2.csv"
 solar_data = pd.read_csv(data_path)  # Read dataset into DataFrame
 solar_data2 = pd.read_csv(data_path2)   
