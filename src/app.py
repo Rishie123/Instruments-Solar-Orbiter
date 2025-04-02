@@ -140,16 +140,19 @@ def update_graphs(selected_instruments, start_date, end_date):
                 name=instrument  # Instrument name
             )
         )
-    time_series_fig.update_layout(
-        title="Time Series of Selected Instruments",
-        title_font_size=28,  # Decrease title font size
-        xaxis_title_font_size=22,  # Decrease x-axis title font size
-        yaxis_title_font_size=22,  # Decrease y-axis title font size
-        legend_font_size=22,  # Decrease legend font size
-        xaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22)),  # Set x-axis tick labels size to 18
-        yaxis=dict(tickfont=dict(size=18), titlefont=dict(size=22))   # Set y-axis tick labels size to 18
-    )  # Updating layout of time series chart
-    
+time_series_fig.update_layout(
+    title="Time Series of Selected Instruments",
+    title_font_size=28,
+    xaxis=dict(
+        tickfont=dict(size=18), 
+        title=dict(text="Date", font=dict(size=22))
+    ),
+    yaxis=dict(
+        tickfont=dict(size=18), 
+        title=dict(text="Instrument Value", font=dict(size=22))
+    ),
+    legend_font_size=22
+)
     # Correlation Heatmap
     correlation_fig = go.Figure(
         go.Heatmap(
